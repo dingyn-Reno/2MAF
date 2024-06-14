@@ -1,0 +1,69 @@
+work_dir: /share/dingyuning/S2MAF/Diving/testSke
+
+weights: /share/dingyuning/S2MAF/Diving/testSke/runs-3-450.pt
+
+
+# feeder
+feeder: feeder.Diving.VideoDataset
+train_feeder_args:
+  debug: False
+  diff_path: /share/Diving/train_diff.pickle
+  label_path: /share/Diving/train_label.pickle
+  data_path: /share/Diving/train_data.pickle
+  clip_len: 151
+  random_choose: True
+  random_move: True
+  window_size: 151
+  split: 'train'
+  mode: 'fusion'
+
+test_feeder_args:
+  debug: False
+  diff_path: /share/Diving/test_diff.pickle
+  label_path: /share/Diving/test_label.pickle
+  data_path: /share/Diving/test_data.pickle
+  clip_len: 151
+  random_choose: False
+  random_move: False
+  window_size: 151
+  split: 'test'
+  mode: 'fusion'
+
+
+#weights: work_dir/skating/base/runs-202-4040.pt
+# model
+#model: model.FTSGCNjia.Model
+model: model.2MAF.Framework
+model_args:
+  I3D_classes: 400
+  num_class: 63
+  num_person: 1
+  num_point: 17
+  # edge_importance_weighting: True
+  graph: graph.gym.Graph
+  graph_args:
+    labeling_mode: 'spatial'
+  mode: 'fusion'
+  size: 128
+
+
+optimizer: 'Adam'
+#training
+# device: [0,1]
+# batch_size: 64
+# test_batch_size: 64
+device: [1]
+batch_size: 2
+test_batch_size: 2
+
+
+#optim
+base_lr: 0.001
+step: [150]
+num_epoch: 300
+lr_decay_rate: 0.1
+warm_up_epoch: 0
+weight_decay: 0.0005
+
+
+seed: 5

@@ -1,0 +1,65 @@
+work_dir: ./work_dir/skat/AQA_test
+#weights: ./work_dir/skating/CW/runs-219-4380.pt
+
+# feeder
+feeder: feeder.M3FS.VideoDataset
+train_feeder_args:
+  debug: False
+  label_path: /share/M3FS/skeleton/train_score.pkl
+  name_path: /share/M3FS/skeleton/train_name.pkl
+  data_path: /share/M3FS/skeleton/train_data.pkl
+  video_dir: /share/M3FS/all_data/skating256_all/video/
+  clip_len: 256
+  random_choose: True
+  random_move: True
+  window_size: 256
+  mode: 'fusion'
+
+test_feeder_args:
+  debug: False
+  label_path: /share/M3FS/skeleton/test_score.pkl
+  name_path: /share/M3FS/skeleton/test_name.pkl
+  data_path: /share/M3FS/skeleton/test_data.pkl
+  video_dir: /share/M3FS/all_data/skating256_all/video/
+  clip_len: 256
+  random_choose: False
+  random_move: False
+  window_size: 256
+  mode: 'fusion'
+
+
+#weights: work_dir/skating/base/runs-202-4040.pt
+# model
+#model: model.FTSGCNjia.Model
+model: model.2MAF.Framework
+model_args:
+  I3D_classes: 400
+  num_class: 63
+  num_person: 1
+  num_point: 17
+  # edge_importance_weighting: True
+  graph: graph.gym.Graph
+  graph_args:
+    labeling_mode: 'spatial'
+  mode: 'fusion'
+
+optimizer: 'Adam'
+#training
+# device: [0,1]
+# batch_size: 64
+# test_batch_size: 64
+device: [0,1]
+batch_size: 2
+test_batch_size: 2
+
+
+#optim
+base_lr: 0.0005
+step: [150]
+num_epoch: 600
+lr_decay_rate: 0.1
+warm_up_epoch: 0
+weight_decay: 0.5
+
+
+seed: 5
